@@ -6,8 +6,8 @@ A Educational project that allows people to do CRUD operations on their text fil
 Write the commands in directory where you want to clone it
 
 ```
-git remote add origin git@github.com:darshan3v/ID_Nest.git
-git clone git@github.com:darshan3v/ID_Nest.git
+git remote add origin https://github.com/darshan3v/CRUD-Rust.git
+git clone https://github.com/darshan3v/CRUD-Rust.git
 ```
 All the git commands should be written inside ID_Nest folder
 ### Git Commands
