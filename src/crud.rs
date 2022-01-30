@@ -6,9 +6,9 @@ struct CPath {
 
 impl CPath {
     pub fn new(path: &str) -> Result<Self, io::ErrorKind> {
-        let n = path.len();
-        let i = path.find(".").unwrap_or_default();
-        if i == 0 || i == n - 1 || i != path.rfind(".").unwrap() {
+        let max_index = path.len() - 1;
+        let first = path.find(".").unwrap_or_default();
+        if first == 0 || first == max_index || first != path.rfind(".").unwrap() {
             Err(io::ErrorKind::InvalidInput)
         } else {
             Ok(CPath {
@@ -18,9 +18,9 @@ impl CPath {
     }
 }
 
-pub fn create_file(file_name: &str) -> Result<File, io::ErrorKind> {
-    let path = CPath::new(file_name)?;
-    match File::create(path.path) {
+pub fn create_file(path: &str) -> Result<File, io::ErrorKind> {
+    let path = CPath::new(path)?.path;
+    match File::create(path) {
         Ok(file) => Ok(file),
         Err(err) => Err(err.kind()),
     }
@@ -31,22 +31,10 @@ mod test {
     use super::create_file;
 
     #[test]
-    #[should_panic]
-    fn test_create_file_f1() {
-        // f1 is fail - 1
-        create_file("hello.t.xt").unwrap();
-    }
-
-    #[test]
-    #[should_panic]
-    fn test_create_file_f2() {
-        create_file("hello.").unwrap();
-    }
-
-    #[test]
-    #[should_panic]
-    fn test_create_file_f3() {
-        create_file("hello").unwrap();
+    fn test_create_file_fail() {
+        create_file("hello.t.xt").unwrap_err();
+        create_file("hello.").unwrap_err();
+        create_file("hello").unwrap_err();
     }
 
     #[test]
